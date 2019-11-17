@@ -1,0 +1,69 @@
+{% extends "bootstrap-base.html" %}
+
+{% block html_attribs %} lang="zh-cmn-Hans" {% endblock %}
+{%- block styles %}
+  <!-- Bootstrap -->
+  <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+  <!-- jQuery UI -->
+  <link rel="stylesheet" type="text/css" href="static/css/jquery-ui.css" />
+  
+  <style>
+  body {
+	font-family: arial,"Hiragino Sans GB","Microsoft Yahei","微软雅黑","宋体",宋体, Tahoma,Arial,Helvetica,STHeiti;
+    color: #ffffff;
+    background-color: #a6baff;
+  }
+  .navbar.navbar-wisteria {
+    background-color: #5677fc;
+  }
+  .navbar-brand {
+    color: #ffffff;
+  }
+  .navbar-brand:hover,
+  .navbar-brand:focus {
+    color: #F1C40F;
+  }
+  .navbar-nav >  li >  a {
+    color: #ffffff;
+  }
+  
+  .navbar-nav >  li >  a:hover,
+  .navbar-nav >  li >  a:focus {
+    color: #F1C40F;
+	background-color: #3b50ce;
+  }
+  </style>
+{%- endblock %}
+
+{% block scripts %}
+  <!-- jQuery -->
+  <script src="static/js/jquery.js"></script>
+  <!-- Bootstrap -->
+  <script src="static/js/bootstrap.js"></script>
+  <!-- jQuery UI -->
+  <script src="static/js/jquery-ui.js"></script>
+  <!-- Table2Excel -->
+  <script type="text/javascript" src="static/js/tableExport.js"></script>
+{%- endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-wisteria navbar-fixed-top">
+	<div class="navbar-header">
+	     <a class="navbar-brand" href="/">Demo</a>
+	</div>
+	<div class="collapse navbar-collapse" id="navbar-collapse-1">
+    	<ul class="nav navbar-nav">
+             <li><a href="{{url_for('index')}}">查询</a></li>
+			 <li><a href="{{url_for('download_price')}}">下载</a></li>
+    	</ul>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<br><br><br><br>
+<div class="container">
+  {% block page_content %}
+  {% endblock %}
+</div>
+{% endblock %}

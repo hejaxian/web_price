@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block title %}江门信息价查询入口{% endblock %}
+
+{%- block styles %}
+	{{ super() }}
+	<style>
+	#search_material {
+		background-color:#6889ff;
+		}
+	#tt {
+		background-color:#14e715;
+		}
+	</style>
+{% endblock %}
+
+{% block scripts %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(document).ready(function(){
+  			$("#end_year").change(function(){
+  				if ($("#end_year").val() < $("#start_year").val()) {
+    				alert('结束年份小于起始年份');
+    				}
+  			});
+		});
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#name").focus(function(){
+			        var cityid = $("#city").val()
+					var url = "/get_name/"+String(cityid);
+				    $("#name").autocomplete({
+                        source:url,
+                        "minLength":1
+				    });
+			});
+		});
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#output").click(function(){
+				var filename = '查询结果'
+				tableExport('result',filename,'xls')
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block page_content %}
+<div class="jumbotron" id='search_material'>
+	<h2 style="text-align:center">五邑地区信息价查询</h2>
+	<br><br><br>
+    <h3>使用说明:</h3>
+    <h4>1.数据采集于江门工程造价信息网，与造价信息网同步更新.</h4>
+	<h4>2.现已支持材料名称提示,在材料名称处输入信息可以自动提示相关材料名称.</h4>
+    <h4>3.数据收录情况：</h4>
+    <h4>江门市2004年1月至今，新会区、恩平市、开平市2012年11月至今，台山市2015年1季度至今(每季度发布一次).</h4>
+	<br><br>
+	<form method="POST" >
+        {{ form.csrf_token }}
+		{% with messages = get_flashed_messages() %}
+  			{% if messages %}
+    		{% for message in messages %}
+      		<div class="alert alert-warning"> 
+    			<a href="#" class="close" data-dismiss="alert"> 
+        		&times; 
+   				</a> 
+   				<strong>警告！</strong>{{ message }}
+			</div>
+    		{% endfor %}
+  			{% endif %}
+		{% endwith %}
+		<div class="row">
+			<div class="form-group col-md-3 col-xs-3">
+				{{form.name.label(class="control-label")}}
+				{{form.name(class="form-control")}}
+			</div>
+            <div class="form-group col-md-3 col-xs-3">
+				{{form.city.label(class="control-label")}}
+				{{form.city(class="form-control")}}
+			</div>
+			<div class="form-group col-md-6 col-xs-6">
+				{{form.size.label(class="control-label")}}
+				{{form.size(class="form-control")}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-md-3 col-xs-3">
+				{{ form.start_year.label(class="control-label")}}
+				{{form.start_year(class="form-control")}}
+			</div>
+			<div class="form-group col-md-3 col-xs-3">
+				{{form.start_month.label(class="control-label")}}
+				{{form.start_month(class="form-control")}}
+			</div>
+			<div class="form-group col-md-3 col-xs-3">
+				{{form.end_year.label(class="control-label")}}
+				{{form.end_year(class="form-control")}}
+			</div>
+			<div class="form-group col-md-3 col-xs-3">
+				{{ form.end_month.label(class="control-label")}}
+				{{form.end_month(class="form-control")}}
+			</div>
+		</div>
+		{{ form.submit(class="btn btn-large btn-block btn-success",data_toggle="modal",data_target="#result")}}
+	</form>
+</div>
+
+		{% if g.query %}
+<div class="jumbotron" id='search_material'>
+		<h2 style="text-align:center">查询结果</h2>
+        <p>平均价格:{{ g.avg }}</p>
+        <p>平均不含税价格:{{ g.notexavg }}</p>
+		<button type="button" id="output" class="btn btn-info pull-right">导出Excel</button>
+	 	<br><br>
+		<table id='result' class="table">
+			 <thead>
+			 	<tr id='tt'>
+                   <th>名称</th>
+                   <th>规格</th>
+                   <th>单位</th>
+                   <th>时间</th>
+                   <th>价格</th>
+                   <th>除税价</th>
+                   <th>折税率</th>
+                </tr>
+            </thead>
+            <tbody>         
+            	{% for q in g.query %}
+                <tr>
+                   <td>{{q.name}}</td>
+                   <td>{{q.spec}}</td>
+                   <td>{{q.unit}}</td>
+                   <td>{{q.issueDate|datetimeformat}}</td>
+                   <td>{{q.price}}</td>
+                   <td>{{q.notaxPrice}}</td>
+                   <td>{{q.taxRate}}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+		</table>
+		{% endif %}
+</div>
+{% endblock %}

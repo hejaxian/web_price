@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}江门信息价汇总表格下载{% endblock %}
+
+{%- block styles %}
+	{{ super() }}
+	<style>
+	#download_price_label {
+		background-color:#6889ff;
+		}
+	</style>
+{% endblock %}
+
+{% block page_content %}
+<div class="jumbotron" id='download_price_label'>
+	<h2 style="text-align:center">五邑地区信息价数据表格下载</h2>
+	<br><br>
+	<form method="POST" >
+		{{ form.hidden_tag() }}
+		<div class="row">
+            <div class="form-group col-md-4 col-xs-4">
+				{{form.city.label(class="control-label")}}
+				{{form.city(class="form-control")}}
+			</div>
+			<div class="form-group col-md-4 col-xs-4">
+				{{form.download_year.label(class="control-label")}}
+				{{form.download_year(class="form-control")}}
+			</div>
+			<div class="form-group col-md-4 col-xs-4">
+				{{form.download_month.label(class="control-label")}}
+				{{form.download_month(class="form-control")}}
+			</div>
+		</div>
+		<br>
+		{{ form.submit(class="btn btn-large btn-block btn-success")}}
+	</form>
+</div>
+{% endblock %}
