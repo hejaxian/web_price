@@ -6,7 +6,7 @@ Flask-Login==0.4.1
 Flask-WTF==0.14.2
 itsdangerous==0.24
 Jinja2==2.9.6
-MarkupSafe==1.0
+MarkupSafe==1.1.1
 peewee==2.8.8
 PyMySQL==0.7.11
 pytz==2016.10
