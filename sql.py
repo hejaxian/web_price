@@ -4,7 +4,7 @@ from peewee import *
 from playhouse.pool import PooledMySQLDatabase
 
 #数据库
-db = PooledMySQLDatabase('MYSQL_DATABASE',host='MYSQL_HOST',port='MYSQL_PORT'，passwd='MYSQL_PASSWD',user='MYSQL_USER',charset='utf8mb4', max_connections=128,stale_timeout=300)
+db = PooledMySQLDatabase('MYSQL_DATABASE',host='MYSQL_HOST',port='MYSQL_PORT',passwd='MYSQL_PASSWD',user='MYSQL_USER',charset='utf8mb4', max_connections=128,stale_timeout=300)
 
 #定义模型
 class BaseModel(Model):
