@@ -1,161 +1,48 @@
-#coding=utf-8
-#使用peewee 数据库ORM
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from peewee import *
 from playhouse.pool import PooledMySQLDatabase
 
-#数据库
-db = PooledMySQLDatabase('MYSQL_DATABASE',host='MYSQL_HOST',port='MYSQL_PORT',passwd='MYSQL_PASSWD',user='MYSQL_USER',charset='utf8mb4', max_connections=128,stale_timeout=300)
-
-#定义模型
+db = PooledMySQLDatabase('MYSQL_DATABASE',host='MYSQL_HOST',port='MYSQL_PORT'，passwd='MYSQL_PASSWD',user='MYSQL_USER',charset='utf8mb4', max_connections=128,stale_timeout=300)
 class BaseModel(Model):
     class Meta:
         database = db
 
-class JM_Price(BaseModel):
+class Price_Catalog(BaseModel):
+    id, matCount = PrimaryKeyField(), IntegerField()
+    issueDate, postDate = DateField(), DateField()
+    pricescope, cityid  = IntegerField(), IntegerField()
+    exist_price = BooleanField(default=False)
+
+class Sprider_log(BaseModel):
+    type, issue = CharField(), CharField()
+    time = DateTimeField()
+
+class BasePrice(BaseModel):
     id = IntegerField()
     #材料分类
-    specclass = CharField(null=True)
-    #材料小类
-    subclass = CharField(null=True)
-    #名称
-    name = CharField()
-    #规格
-    spec = CharField(null=True)
-    #单位
-    unit = CharField(null=True)
-    #品牌
-    brand = CharField(null=True)
-    #价格（含税）
+    specclass, subclass = CharField(null=True), CharField(null=True)
+    #名称、规格、单位、品牌
+    name, spec, unit, brand = CharField(), CharField(null=True), CharField(null=True), CharField(null=True)
+    #含税价、除税价、税率
     price = FloatField()
     #除税价格
-    notaxPrice = FloatField()
-    #税率
-    taxRate = FloatField()
-    #备注
-    note = CharField(null=True)
-    #城市
-    cityid = IntegerField()
-    #时间
-    issueDate = DateField()
-    #journalId
-    journalId = IntegerField()
+    notaxPrice, taxRate, note = FloatField(), FloatField(), CharField(null=True)
+    #城市、信息价时间、journalID
+    cityid, issueDate, journalId = IntegerField(), DateField(null=True), IntegerField()
 
-class XH_Price(BaseModel):
-    id = IntegerField()
-    # 材料分类
-    specclass = CharField(null=True)
-    # 材料小类
-    subclass = CharField(null=True)
-    # 名称
-    name = CharField()
-    # 规格
-    spec = CharField(null=True)
-    # 单位
-    unit = CharField(null=True)
-    # 品牌
-    brand = CharField(null=True)
-    # 价格（含税）
-    price = FloatField()
-    # 除税价格
-    notaxPrice = FloatField()
-    # 税率
-    taxRate = FloatField()
-    # 备注
-    note = CharField(null=True)
-    # 城市
-    cityid = IntegerField()
-    # 时间
-    issueDate = DateField()
-    # journalId
-    journalId = IntegerField()
-
-class EP_Price(BaseModel):
-    id = IntegerField()
-    #材料分类
-    specclass = CharField(null=True)
-    #材料小类
-    subclass = CharField(null=True)
-    #名称
-    name = CharField()
-    #规格
-    spec = CharField(null=True)
-    #单位
-    unit = CharField(null=True)
-    #品牌
-    brand = CharField(null=True)
-    #价格（含税）
-    price = FloatField()
-    #除税价格
-    notaxPrice = FloatField()
-    #税率
-    taxRate = FloatField()
-    #备注
-    note = CharField(null=True)
-    #城市
-    cityid = IntegerField()
-    #时间
-    issueDate = DateField()
-    #journalId
-    journalId = IntegerField()
-
-class KP_Price(BaseModel):
-    id = IntegerField()
-    #材料分类
-    specclass = CharField(null=True)
-    #材料小类
-    subclass = CharField(null=True)
-    #名称
-    name = CharField()
-    #规格
-    spec = CharField(null=True)
-    #单位
-    unit = CharField(null=True)
-    #品牌
-    brand = CharField(null=True)
-    #价格（含税）
-    price = FloatField()
-    #除税价格
-    notaxPrice = FloatField()
-    #税率
-    taxRate = FloatField()
-    #备注
-    note = CharField(null=True)
-    #城市
-    cityid = IntegerField()
-    #时间
-    issueDate = DateField()
-    #journalId
-    journalId = IntegerField()
-
-class TS_Price(BaseModel):
-    id = IntegerField()
-    #材料分类
-    specclass = CharField(null=True)
-    #材料小类
-    subclass = CharField(null=True)
-    #名称
-    name = CharField()
-    #规格
-    spec = CharField(null=True)
-    #单位
-    unit = CharField(null=True)
-    #品牌
-    brand = CharField(null=True)
-    #价格（含税）
-    price = FloatField()
-    #除税价格
-    notaxPrice = FloatField()
-    #税率
-    taxRate = FloatField()
-    #备注
-    note = CharField(null=True)
-    #城市
-    cityid = IntegerField()
-    #时间
-    issueDate = DateField()
-    #journalId
-    journalId = IntegerField()
+class JM_Price(BasePrice):
+    pass
+class XH_Price(BasePrice):
+    pass
+class EP_Price(BasePrice):
+    pass
+class KP_Price(BasePrice):
+    pass
+class TS_Price(BasePrice):
+    pass
 
 class Name_Index(BaseModel):
+    id = AutoField()
     name = CharField()
     cityid = IntegerField()
